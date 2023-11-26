@@ -4,6 +4,9 @@
 # Compiled class file
 *.class
 
+# builds
+out
+
 # Log file
 *.log
 
