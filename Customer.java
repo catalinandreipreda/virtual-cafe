@@ -1,5 +1,6 @@
 import Helpers.Client;
 
+
 import java.util.Scanner;
 
 public class Customer {
@@ -10,6 +11,9 @@ public class Customer {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello! What is your name?");
         String name = scanner.nextLine();
+
+// Intercept and gracefully handle SIGTERM signals (e.g. pressing Ctrl-C) for exiting the café
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("Exiting cafe and disconnecting client")));
 
         try  {
             Client client = new Client(SERVER_URL, PORT);
