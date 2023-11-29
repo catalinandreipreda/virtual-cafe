@@ -1,7 +1,8 @@
 import Helpers.Client;
 
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 //TODO The user can order one or more teas or coffees via the client at any time, by typing commands
 //TODO Inquire about the order status
@@ -11,31 +12,43 @@ public class Customer {
     final static String SERVER_URL = "localhost";
     final static int PORT = 8888;
 
+   static  String username;
+
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Hello! What is your name?");
-        String name = scanner.nextLine();
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+
+
 
     // Intercept and gracefully handle SIGTERM signals (e.g. pressing Ctrl-C) for exiting the café
         Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("Exiting cafe and disconnecting client")));
 
         try  {
             Client client = new Client(SERVER_URL, PORT);
-            client.sendMessage(name + " entered the cafe");
+
             while (client.isConnected()) {
                 String response = client.readResponse();
+
                 if(response != null){
-                System.out.println("Barista: " + response);
+                    System.out.println("Barista: " + response);
+
+                    if(username == null && response.contains("What is your name?")){
+                        username =  scanner.readLine();
+                        client.sendMessage("username:"+username);
+                    }
+
                 }
 
-                if(scanner.hasNextLine()){
-                    String message = scanner.nextLine();
+
+
+
+                if(scanner.ready()){
+                    String message = scanner.readLine();
                     client.sendMessage(message);
 
                     // leave the café at any time, by typing exit
                     if (message.equalsIgnoreCase("exit")) {
-                        client.sendMessage("Client disconnected");
-                        System.out.println(name + " left the cafe");
+                        System.out.println(username + " left the cafe");
                         client.close();
                         break;
                     }

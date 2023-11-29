@@ -21,7 +21,7 @@ public class Client{
     public String readResponse(){
         String response;
         try {
-            response = reader.readLine();
+            response = reader.ready() ? reader.readLine() : null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -30,7 +30,7 @@ public class Client{
     }
 
     public Boolean isConnected(){
-        return socket.isConnected();
+        return socket.isConnected() && !socket.isClosed();
     }
 
     public void close() {

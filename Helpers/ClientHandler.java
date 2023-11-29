@@ -1,10 +1,10 @@
 package Helpers;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-//TODO ask client for name instead of having it hardcoded in client
 //TODO respond to order commands
 //TODO respond to order status commands
 //TODO respond with error message for unknown commands
@@ -18,9 +18,20 @@ import java.util.Scanner;
 public class ClientHandler implements Runnable{
     private final Socket socket;
 
-    private String customerName = "Unknown Customer";
+    private String customerName;
     public ClientHandler(Socket clientSocket){
         this.socket = clientSocket;
+    }
+
+    private void disconnect(){
+        try {
+            socket.close();
+            System.out.println("Client disconnected");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to close socket");
+        }
+
     }
 
     @Override
@@ -31,16 +42,26 @@ public class ClientHandler implements Runnable{
             PrintWriter writer = new PrintWriter( socket.getOutputStream(), true );
 
             System.out.println("Client connected");
-            String firstMessage = scanner.nextLine();
-            if(firstMessage.contains(" entered the cafe")){
-                this.customerName = firstMessage.replaceFirst(" entered the cafe", "");
-            }
-;
-            writer.println("Welcome to the cafe, " + customerName + "!");
+            writer.println("Hello! What is your name?");
+
+
+
             while (socket.isConnected()){
 
                 if(scanner.hasNextLine()){
                     String request = scanner.nextLine();
+
+                    if (request.equalsIgnoreCase("exit")){
+                        scanner.close();
+                        writer.close();
+                        break;
+                    }
+
+                    if(customerName == null && request.contains("username:")){
+                        customerName = request.replace("username:", "");
+                        writer.println("Welcome to the cafe, " + customerName + "!");
+                    }
+
                     System.out.println("[Received from " + customerName + " ]: " + request);
                     writer.println(request);
                 }
@@ -50,6 +71,8 @@ public class ClientHandler implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+        } finally {
+            disconnect();
         }
 
 
