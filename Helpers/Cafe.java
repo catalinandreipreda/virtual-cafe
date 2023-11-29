@@ -2,7 +2,7 @@ package Helpers;
 
 public class Cafe {
 
-    public static void parseOrder(String order) {
+    public static Order parseOrder(String order) {
         String[] words = order.split("\\s+");
         int totalCoffees = 0;
         int totalTeas = 0;
@@ -10,13 +10,16 @@ public class Cafe {
         for (int i = 1; i < words.length; i++) {
             String word = words[i];
             if (word.contains("coffee")) {
-                totalCoffees++;
+                String previousToken = words[i - 1];
+                var count = Integer.parseInt(previousToken);
+                totalCoffees += count;
             } else if (word.contains("tea")) {
-                totalTeas++;
+                String previousToken = words[i - 1];
+                var count = Integer.parseInt(previousToken);
+                totalTeas += count;
             }
         }
 
-        System.out.println("Total coffees: " + totalCoffees);
-        System.out.println("Total teas: " + totalTeas);
+        return new Order(totalTeas, totalCoffees);
     }
 }

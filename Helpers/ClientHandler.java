@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 //TODO respond to order commands
 //TODO respond to order status commands
-//TODO respond with error message for unknown commands
 //TODO implement brewing lifecycle with waiting area, brewing area and tray area
 //TODO If a client orders new items before their previous order has completed, instead of generating a new ‘order’, the new items should simply be added to the existing order.
 
@@ -51,6 +50,8 @@ public class ClientHandler implements Runnable{
                 if(scanner.hasNextLine()){
                     String request = scanner.nextLine();
 
+                    System.out.println("[Received from " + customerName + " ]: " + request);
+
                     if (request.equalsIgnoreCase("exit")){
                         scanner.close();
                         writer.close();
@@ -69,11 +70,21 @@ public class ClientHandler implements Runnable{
                             continue;
                         }
 
+                        try {
+                            var order = Cafe.parseOrder(request);
+                            String orderResponse = order.isEmpty() ? "We couldn't place your order, no quantity for tea or coffee was specified" :"Order received from " + customerName + " ( " + order.coffeeCount + " X coffee, " + order.teaCount + " X tea )";
+                            writer.println(orderResponse);
+                            continue;
+                        } catch (Exception e){
+                            writer.println("We couldn't process your order, please make sure it is correctly formatted and try again" + "\n Example: " + " order 1 tea and 3 coffees");
+
+                            continue;
+                        }
 
                     }
 
-                    System.out.println("[Received from " + customerName + " ]: " + request);
-                    writer.println(request);
+
+                    writer.println("Unrecognized command");
                 }
 
 
