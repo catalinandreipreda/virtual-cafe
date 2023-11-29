@@ -4,6 +4,17 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+//TODO ask client for name instead of having it hardcoded in client
+//TODO respond to order commands
+//TODO respond to order status commands
+//TODO respond with error message for unknown commands
+//TODO implement brewing lifecycle with waiting area, brewing area and tray area
+//TODO If a client orders new items before their previous order has completed, instead of generating a new ‘order’, the new items should simply be added to the existing order.
+
+//TODO If a client leaves the café before their order has completed, simply discard the relevant objects from the respective areas.
+//TODO [BONUS] Whenever a client leaves, the server should check if any of their brewing or tray items can be repurposed for orders belonging to other clients
+
+//TODO [BONUS] implement authorization
 public class ClientHandler implements Runnable{
     private final Socket socket;
 
