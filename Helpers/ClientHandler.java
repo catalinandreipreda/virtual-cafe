@@ -60,6 +60,16 @@ public class ClientHandler implements Runnable{
                     if(customerName == null && request.contains("username:")){
                         customerName = request.replace("username:", "");
                         writer.println("Welcome to the cafe, " + customerName + "!");
+                        continue;
+                    }
+
+                    if (request.startsWith("order")){
+                        if(request.equalsIgnoreCase("Order status")){
+                            writer.println("Working on your order. No status available");
+                            continue;
+                        }
+
+
                     }
 
                     System.out.println("[Received from " + customerName + " ]: " + request);
