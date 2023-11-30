@@ -23,7 +23,7 @@ public class Order {
         return teaCount == 0 && coffeeCount == 0;
     }
 
-    public boolean isValid() { return teaCount > 0 || coffeeCount > 0;  }
+    public boolean isValid() { return teaCount >= 0 && coffeeCount >= 0;  }
 
     @Override
     public String toString(){

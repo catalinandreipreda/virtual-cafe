@@ -24,7 +24,7 @@ public class Cafe {
         try {
             var newOrder = Cafe.parseOrderMessage(orderMessage);
 
-            if(newOrder.isValid()){
+            if(newOrder.isValid() && !newOrder.isEmpty()){
                 thisCustomersOrder.append(newOrder);
                 orders.put(customerName, thisCustomersOrder);
                 writer.println("Order received from " + customerName + thisCustomersOrder);
