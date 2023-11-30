@@ -3,9 +3,8 @@ import Helpers.Client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 
-//TODO The user can order one or more teas or coffees via the client at any time, by typing commands
-//TODO Inquire about the order status
 //TODO [BONUS] client has authentication mechanism (protocol) to prove that it is a valid client and is allowed to interact with the server
 //TODO [BONUS] implement non blocking I/O so client can receive messages from the server at any time. Not just as a response to a command sent by the client
 public class Customer {
@@ -55,7 +54,10 @@ public class Customer {
                 }
 
             }
-        }  catch (Exception e) {
+        } catch (ConnectException e) {
+            System.out.println("Could not connect to barista, check that the server is running");
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
