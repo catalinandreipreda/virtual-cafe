@@ -6,7 +6,6 @@ import java.net.Socket;
 
 //TODO keep track of connected clients
 //TODO Every time the server changes state in any way, it should output a log of the current state in the terminal, consisting of: number of clients, clients waiting for order, items in different brewing stages
-//TODO [BONUS] also dump all logs in a JSON file. Each entry should also be associated with the date and time of the event.
 public class Server implements  AutoCloseable{
 
     private final ServerSocket serverSocket;

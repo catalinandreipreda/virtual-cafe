@@ -17,6 +17,7 @@ public class ClientHandler implements Runnable{
 
     private static Cafe cafe;
 
+    private static final Logger logger = new Logger();
     private String customerName;
     public ClientHandler(Socket clientSocket){
 
@@ -27,10 +28,10 @@ public class ClientHandler implements Runnable{
     private void disconnect(){
         try {
             socket.close();
-            System.out.println("Client disconnected");
+            logger.log("Client disconnected");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed to close socket");
+            logger.log("Failed to close socket");
         }
 
     }
@@ -42,7 +43,7 @@ public class ClientHandler implements Runnable{
             Scanner scanner = new Scanner(socket.getInputStream());
             PrintWriter writer = new PrintWriter( socket.getOutputStream(), true );
 
-            System.out.println("Client connected");
+            logger.log("Client connected");
             writer.println("Hello! What is your name?");
 
 
@@ -52,7 +53,7 @@ public class ClientHandler implements Runnable{
                 if(scanner.hasNextLine()){
                     String request = scanner.nextLine();
 
-                    System.out.println("[Received from " + customerName + " ]: " + request);
+                    logger.log("[Received from " + customerName + " ]: " + request);
 
                     if (request.equalsIgnoreCase("exit")){
                         cafe.removeOrder(customerName);

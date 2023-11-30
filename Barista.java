@@ -2,7 +2,7 @@ import Helpers.Server;
 
 public class Barista {
     final static int PORT = 8888;
-//    private static Server cafeServer;
+
 
 
     public static void main(String[] args) {
