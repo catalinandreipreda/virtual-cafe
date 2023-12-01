@@ -22,7 +22,7 @@ public class ClientHandler implements Runnable{
     public ClientHandler(Socket clientSocket){
 
         this.socket = clientSocket;
-        cafe = new Cafe();
+        cafe = new Cafe(logger);
     }
 
     private void disconnect(){
